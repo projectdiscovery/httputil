@@ -21,11 +21,6 @@ func AllHTTPMethods() []string {
 	}
 }
 
-const (
-	headerParts  = 2
-	requestParts = 3
-)
-
 // DumpRequest to string
 func DumpRequest(req *http.Request) (string, error) {
 	dump, err := httputil.DumpRequestOut(req, true)
