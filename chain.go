@@ -17,7 +17,7 @@ func GetChain(r *http.Response) (chain []ChainItem, err error) {
 	lastresp := r
 	for lastresp != nil {
 		lastreq := lastresp.Request
-		lastreqDump, err := httputil.DumpRequestOut(lastreq, false)
+		lastreqDump, err := httputil.DumpRequest(lastreq, false)
 		if err != nil {
 			return nil, err
 		}
