@@ -31,7 +31,7 @@ func DumpRequest(req *http.Request) (string, error) {
 // DumpResponseHeadersAndRaw returns http headers and response as strings
 func DumpResponseHeadersAndRaw(resp *http.Response) (header, response string, err error) {
 	// httputil.DumpResponse does not work with websockets
-	if resp.StatusCode >= http.StatusContinue || resp.StatusCode <= http.StatusEarlyHints {
+	if resp.StatusCode >= http.StatusContinue && resp.StatusCode <= http.StatusEarlyHints {
 		raw := resp.Status + "\n"
 		for h, v := range resp.Header {
 			raw += fmt.Sprintf("%s: %s\n", h, v)
