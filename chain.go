@@ -10,6 +10,8 @@ type ChainItem struct {
 	Request    []byte
 	Response   []byte
 	StatusCode int
+	Location   string
+	RequestURL string
 }
 
 // GetChain if redirects
@@ -25,7 +27,12 @@ func GetChain(r *http.Response) (chain []ChainItem, err error) {
 		if err != nil {
 			return nil, err
 		}
-		chain = append(chain, ChainItem{Request: lastreqDump, Response: lastrespDump, StatusCode: lastresp.StatusCode})
+		var location string
+		if l, err := lastresp.Location(); err == nil {
+			location = l.String()
+		}
+		requestURL := lastreq.URL.String()
+		chain = append(chain, ChainItem{Request: lastreqDump, Response: lastrespDump, StatusCode: lastresp.StatusCode, Location: location, RequestURL: requestURL})
 		// process next
 		lastresp = lastreq.Response
 	}
