@@ -29,7 +29,9 @@ func TestDumpResponseHeadersAndRaw(t *testing.T) {
 	res, err := http.Get(ts.URL)
 	require.Nil(t, err)
 
-	headersdump, respdump, err := DumpResponseHeadersAndRaw(res)
+	headersdumpB, respdumpB, err := DumpResponseHeadersAndRaw(res)
+	headersdump := string(headersdumpB)
+	respdump := string(respdumpB)
 	headersdump = strings.Split(headersdump, "Date")[0]
 	tokens := strings.Split(respdump, "\r\n")
 	respdump = ""
