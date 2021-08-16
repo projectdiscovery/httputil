@@ -29,22 +29,19 @@ func DumpRequest(req *http.Request) (string, error) {
 }
 
 // DumpResponseHeadersAndRaw returns http headers and response as strings
-func DumpResponseHeadersAndRaw(resp *http.Response) (header, response string, err error) {
+func DumpResponseHeadersAndRaw(resp *http.Response) (headers, fullresp []byte, err error) {
 	// httputil.DumpResponse does not work with websockets
 	if resp.StatusCode >= http.StatusContinue && resp.StatusCode <= http.StatusEarlyHints {
 		raw := resp.Status + "\n"
 		for h, v := range resp.Header {
 			raw += fmt.Sprintf("%s: %s\n", h, v)
 		}
-		return raw, raw, nil
+		return []byte(raw), []byte(raw), nil
 	}
-	headers, err := httputil.DumpResponse(resp, false)
+	headers, err = httputil.DumpResponse(resp, false)
 	if err != nil {
-		return "", "", err
+		return
 	}
-	fullResp, err := httputil.DumpResponse(resp, true)
-	if err != nil {
-		return "", "", err
-	}
-	return string(headers), string(fullResp), err
+	fullresp, err = httputil.DumpResponse(resp, true)
+	return
 }
